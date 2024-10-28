@@ -1,5 +1,8 @@
-#Импортируем Пай тест
+#Импортируем
 import  pytest
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
 
 #Функция pytest_addoption добавляет новый параметр командной строки для pytest
 def pytest_addoption(parser):
@@ -12,3 +15,12 @@ def pytest_addoption(parser):
 def browser_language(request):
     language = request.config.getoption("language")
     return language
+
+#Фикстура позволяет удобно инициализировать и закрывать браузер для каждого теста
+@pytest.fixture(scope="function")
+def browser():
+    print("\nstart browser for test..")
+    driver = webdriver.Chrome()
+    yield driver
+    print("\nquit browser..")
+    driver.quit()
